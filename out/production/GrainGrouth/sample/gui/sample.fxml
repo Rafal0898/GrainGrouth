@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.canvas.Canvas?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.StackPane?>
+
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="769.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.gui.Controller">
+    <children>
+      <Button fx:id="startButton" mnemonicParsing="false" onAction="#clickStartButton" prefHeight="26.0" prefWidth="50.0" text="Start" StackPane.alignment="TOP_LEFT">
+         <StackPane.margin>
+            <Insets left="10.0" top="10.0" />
+         </StackPane.margin>
+      </Button>
+      <CheckBox fx:id="checkBoxPeriodicBoundaryConditions" mnemonicParsing="false" onAction="#uncheckABCs" text="PBCs" StackPane.alignment="TOP_LEFT">
+         <StackPane.margin>
+            <Insets left="365.0" top="15.0" />
+         </StackPane.margin>
+      </CheckBox>
+      <ComboBox fx:id="comboBoxNucleation" onAction="#setLabelsAndCanvas" prefWidth="80.0" StackPane.alignment="TOP_LEFT">
+         <StackPane.margin>
+            <Insets left="230.0" top="10.0" />
+         </StackPane.margin>
+      </ComboBox>
+      <Label text="Nucleation:" StackPane.alignment="TOP_LEFT">
+         <StackPane.margin>
+            <Insets left="168.0" top="15.0" />
+         </StackPane.margin>
+      </Label>
+      <Label text="Grid size: x = " StackPane.alignment="TOP_LEFT">
+         <StackPane.margin>
+            <Insets left="420.0" top="15.0" />
+         </StackPane.margin>
+      </Label>
+      <TextField fx:id="textFieldY" maxWidth="50.0" prefWidth="30.0" StackPane.alignment="TOP_LEFT">
+         <StackPane.margin>
+            <Insets left="490.0" top="10.0" />
+         </StackPane.margin>
+      </TextField>
+      <Label text="y=" StackPane.alignment="TOP_LEFT">
+         <StackPane.margin>
+            <Insets left="550.0" top="15.0" />
+         </StackPane.margin>
+      </Label>
+      <TextField fx:id="textFieldX" maxWidth="50.0" prefWidth="30.0" StackPane.alignment="TOP_LEFT">
+         <StackPane.margin>
+            <Insets left="565.0" top="10.0" />
+         </StackPane.margin>
+      </TextField>
+      <Button fx:id="pauseResumeButton" mnemonicParsing="false" onAction="#clickPauseResumeButton" text="Pause/Resume" StackPane.alignment="TOP_LEFT">
+         <StackPane.margin>
+            <Insets left="70.0" top="10.0" />
+         </StackPane.margin>
+      </Button>
+      <CheckBox fx:id="checkBoxAbsorbingBoundaryConditions" mnemonicParsing="false" onAction="#uncheckPBCs" text="ABCs" StackPane.alignment="TOP_LEFT">
+         <StackPane.margin>
+            <Insets left="313.0" top="15.0" />
+         </StackPane.margin></CheckBox>
+      <Label fx:id="labelRadiusOrRow" text="Quantity in row:" StackPane.alignment="TOP_LEFT">
+         <StackPane.margin>
+            <Insets left="10.0" top="45.0" />
+         </StackPane.margin>
+      </Label>
+      <TextField fx:id="textFieldR" maxWidth="40.0" prefWidth="40.0" StackPane.alignment="TOP_LEFT">
+         <StackPane.margin>
+            <Insets left="100.0" top="40.0" />
+         </StackPane.margin>
+      </TextField>
+      <TextField fx:id="textFieldC" maxWidth="40.0" StackPane.alignment="TOP_LEFT">
+         <StackPane.margin>
+            <Insets left="250.0" top="40.0" />
+         </StackPane.margin>
+      </TextField>
+      <Label fx:id="labelQuantityOrColumn" text="Quantity in column:" StackPane.alignment="TOP_LEFT">
+         <StackPane.margin>
+            <Insets left="145.0" top="45.0" />
+         </StackPane.margin>
+      </Label>
+      <Label text="Neighbourhood:" StackPane.alignment="TOP_LEFT">
+         <StackPane.margin>
+            <Insets left="300.0" top="45.0" />
+         </StackPane.margin>
+      </Label>
+      <ComboBox fx:id="comboBoxNeighbourhood" onAction="#appearRadiusTextField" prefWidth="100.0" StackPane.alignment="TOP_LEFT">
+         <StackPane.margin>
+            <Insets left="393.0" top="40.0" />
+         </StackPane.margin>
+      </ComboBox>
+      <Canvas fx:id="canvas" height="700.0" width="1800.0" StackPane.alignment="TOP_LEFT">
+         <StackPane.margin>
+            <Insets left="10.0" top="80.0" />
+         </StackPane.margin>
+      </Canvas>
+      <Label fx:id="labelRadius" text="Radius:" StackPane.alignment="TOP_LEFT">
+         <StackPane.margin>
+            <Insets left="495.0" top="45.0" />
+         </StackPane.margin>
+      </Label>
+      <TextField fx:id="textFieldRadius" maxWidth="70.0" StackPane.alignment="TOP_LEFT">
+         <StackPane.margin>
+            <Insets left="535.0" top="40.0" />
+         </StackPane.margin>
+      </TextField>
+   </children>
+</StackPane>
