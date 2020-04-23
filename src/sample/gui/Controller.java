@@ -2,6 +2,7 @@ package sample.gui;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 import java.util.ResourceBundle;
@@ -81,7 +82,7 @@ public class Controller implements Initializable {
         } catch (NullPointerException nullException) {
             System.out.println("First usage");
         }
-        long delay = 0;//300_000_000;
+        long delay = 300_000_000;
 
         boolean ifPeriodicBoundaryConditions = checkBoxPeriodicBoundaryConditions.isSelected();
         boolean ifAbsorbingBoundaryConditions = checkBoxAbsorbingBoundaryConditions.isSelected();
@@ -132,16 +133,14 @@ public class Controller implements Initializable {
         Cell[][] initializedArray = createEmptyArray(xSize, ySize);
         Random generator = new Random();
         int index = 1;
+        HashSet<Color> allColors = new HashSet<>();
         switch (nucleationType) {
             case "Homogeneous": {
                 int xDistance = xSize / quantityOrQuantityInColumn;
                 int yDistance = ySize / rOrQuantityInRow;
                 for (int i = 0; i < quantityOrQuantityInColumn; i++) {
                     for (int j = 0; j < rOrQuantityInRow; j++) {
-                        int r = Math.abs(generator.nextInt() % 256);
-                        int g = Math.abs(generator.nextInt() % 256);
-                        int b = Math.abs(generator.nextInt() % 256);
-                        Cell.map.put(index, Color.rgb(r, g, b));
+                        Cell.map.put(index, returnUniqueColor(allColors));
                         initializedArray[i * xDistance][j * yDistance] = new Cell(index, true);
                         index++;
                     }
@@ -150,13 +149,10 @@ public class Controller implements Initializable {
             }
             case "Random": {
                 while (index <= quantityOrQuantityInColumn) {
-                    int r = Math.abs(generator.nextInt() % 256);
-                    int g = Math.abs(generator.nextInt() % 256);
-                    int b = Math.abs(generator.nextInt() % 256);
                     int x = Math.abs(generator.nextInt() % xSize);
                     int y = Math.abs(generator.nextInt() % ySize);
                     if (!initializedArray[x][y].isState()) {
-                        Cell.map.put(index, Color.rgb(r, g, b));
+                        Cell.map.put(index, returnUniqueColor(allColors));
                         initializedArray[x][y] = new Cell(index, true);
                         index++;
                     }
@@ -166,9 +162,6 @@ public class Controller implements Initializable {
             case "With radius": {
                 int triesCounter = 0;
                 while (index <= quantityOrQuantityInColumn) {
-                    int r = Math.abs(generator.nextInt() % 256);
-                    int g = Math.abs(generator.nextInt() % 256);
-                    int b = Math.abs(generator.nextInt() % 256);
                     int x = Math.abs(generator.nextInt() % xSize);
                     int y = Math.abs(generator.nextInt() % ySize);
                     if (!initializedArray[x][y].isState()) {
@@ -183,7 +176,7 @@ public class Controller implements Initializable {
                             }
                         }
                         if (var) {
-                            Cell.map.put(index, Color.rgb(r, g, b));
+                            Cell.map.put(index, returnUniqueColor(allColors));
                             initializedArray[x][y] = new Cell(index, true);
                             index++;
                         }
@@ -211,6 +204,7 @@ public class Controller implements Initializable {
                 xArray.clear();
                 yArray.clear();
                 colorsArray.clear();
+                colors.clear();
                 break;
             }
             default: {
@@ -245,6 +239,7 @@ public class Controller implements Initializable {
                 break;
             }
             case "Self defined": {
+                clickStartButton();
                 try {
                     animation.stop();
                 } catch (NullPointerException nullException) {
@@ -279,6 +274,7 @@ public class Controller implements Initializable {
     List<Integer> xArray = new ArrayList<>();
     List<Integer> yArray = new ArrayList<>();
     List<Color> colorsArray = new ArrayList<>();
+    HashSet<Color> colors = new HashSet<>();
 
     private void handleDraw(MouseEvent event) {
         int xCord = (int) event.getX();
@@ -286,17 +282,29 @@ public class Controller implements Initializable {
         xCord = xCord - xCord % squareSize;
         yCord = yCord - yCord % squareSize;
 
-        Random generator = new Random();
-        int r = Math.abs(generator.nextInt() % 256);
-        int g = Math.abs(generator.nextInt() % 256);
-        int b = Math.abs(generator.nextInt() % 256);
-        Color color = Color.rgb(r, g, b);
+        Color color = returnUniqueColor(colors);
 
         Drawing.drawForSelfDefined(color, xCord, yCord, canvas);
 
         colorsArray.add(color);
         xArray.add(xCord / squareSize);
         yArray.add(yCord / squareSize);
+    }
+
+    private Color generateColor() {
+        Random generator = new Random();
+        int r = Math.abs(generator.nextInt() % 256);
+        int g = Math.abs(generator.nextInt() % 256);
+        int b = Math.abs(generator.nextInt() % 256);
+        return Color.rgb(r, g, b);
+    }
+    private Color returnUniqueColor(HashSet<Color> allColors){
+        Color newColor = generateColor();
+        while (allColors.contains(newColor)) {
+            newColor = generateColor();
+        }
+        allColors.add(newColor);
+        return newColor;
     }
 
     private void doNothing(MouseEvent mouseEvent) {

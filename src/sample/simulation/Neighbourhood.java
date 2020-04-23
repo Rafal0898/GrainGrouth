@@ -18,8 +18,13 @@ public class Neighbourhood {
                     Map<Integer, Integer> map = new HashMap<>();
                     for (int rx = i - radiusNeighbourhood; rx <= i + radiusNeighbourhood; rx++) {
                         for (int ry = j - radiusNeighbourhood; ry <= j + radiusNeighbourhood; ry++) {
-                            if (currentTimeStepBoard.getCell(rx, ry).isState())
-                                map.merge(currentTimeStepBoard.getCell(rx, ry).getId(), 1, Integer::sum);
+                            Cell currentCell = currentTimeStepBoard.getCell(rx, ry);
+                            if (currentCell.isState()) {
+                                double length = Math.sqrt(Math.pow(i + centerCell.getxCenterOfGravity() - rx - currentCell.getxCenterOfGravity(), 2)
+                                        + Math.pow(j + centerCell.getyCenterOfGravity() - ry - currentCell.getyCenterOfGravity(), 2));
+                                if (length <= radiusNeighbourhood)
+                                    map.merge(currentTimeStepBoard.getCell(rx, ry).getId(), 1, Integer::sum);
+                            }
                         }
                     }
                     if (!map.isEmpty()) {
@@ -258,8 +263,16 @@ public class Neighbourhood {
                     for (int rx = i - radiusNeighbourhood; rx <= i + radiusNeighbourhood; rx++) {
                         for (int ry = j - radiusNeighbourhood; ry <= j + radiusNeighbourhood; ry++) {
                             try {
-                                if (currentTimeStep[rx][ry].isState())
-                                    map.merge(currentTimeStep[rx][ry].getId(), 1, Integer::sum);
+                                // TODO: 23.04.2020 Naprawić sąsiedztwo z promieniem
+//                                if (currentTimeStep[rx][ry].isState())
+//                                    map.merge(currentTimeStep[rx][ry].getId(), 1, Integer::sum);
+                                Cell currentCell = currentTimeStep[rx][ry];
+                                if (currentCell.isState()) {
+                                    double length = Math.sqrt(Math.pow(i + centerCell.getxCenterOfGravity() - rx - currentCell.getxCenterOfGravity(), 2)
+                                            + Math.pow(j + centerCell.getyCenterOfGravity() - ry - currentCell.getyCenterOfGravity(), 2));
+                                    if (length <= radiusNeighbourhood)
+                                        map.merge(currentTimeStep[rx][ry].getId(), 1, Integer::sum);
+                                }
                             } catch (ArrayIndexOutOfBoundsException ignored) {
                             }
                         }
