@@ -11,6 +11,7 @@ public class Cell {
     private boolean state;
     private double xCenterOfGravity;
     private double yCenterOfGravity;
+    private int energy;
     public static Map<Integer, Color> map = new HashMap<>();
 
     public Cell(int id, boolean state) {
@@ -18,8 +19,8 @@ public class Cell {
         this.state = state;
 
         Random generator = new Random();
-        xCenterOfGravity=Math.abs(generator.nextDouble()%1);
-        yCenterOfGravity=Math.abs(generator.nextDouble()%1);
+        xCenterOfGravity = Math.abs(generator.nextDouble() % 1);
+        yCenterOfGravity = Math.abs(generator.nextDouble() % 1);
     }
 
     public int getId() {
@@ -40,5 +41,13 @@ public class Cell {
 
     public double getyCenterOfGravity() {
         return yCenterOfGravity;
+    }
+
+    public void setEnergy(int energy) {
+        this.energy=energy;
+    }
+
+    public int getEnergy(){
+        return energy;
     }
 }

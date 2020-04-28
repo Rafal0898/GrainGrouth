@@ -263,9 +263,6 @@ public class Neighbourhood {
                     for (int rx = i - radiusNeighbourhood; rx <= i + radiusNeighbourhood; rx++) {
                         for (int ry = j - radiusNeighbourhood; ry <= j + radiusNeighbourhood; ry++) {
                             try {
-                                // TODO: 23.04.2020 Naprawić sąsiedztwo z promieniem
-//                                if (currentTimeStep[rx][ry].isState())
-//                                    map.merge(currentTimeStep[rx][ry].getId(), 1, Integer::sum);
                                 Cell currentCell = currentTimeStep[rx][ry];
                                 if (currentCell.isState()) {
                                     double length = Math.sqrt(Math.pow(i + centerCell.getxCenterOfGravity() - rx - currentCell.getxCenterOfGravity(), 2)

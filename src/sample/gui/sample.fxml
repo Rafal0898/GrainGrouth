@@ -11,11 +11,6 @@
 
 <StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="769.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.gui.Controller">
     <children>
-      <Button fx:id="startButton" mnemonicParsing="false" onAction="#clickStartButton" prefHeight="26.0" prefWidth="50.0" text="Start" StackPane.alignment="TOP_LEFT">
-         <StackPane.margin>
-            <Insets left="10.0" top="10.0" />
-         </StackPane.margin>
-      </Button>
       <CheckBox fx:id="checkBoxPeriodicBoundaryConditions" mnemonicParsing="false" onAction="#uncheckABCs" text="PBCs" StackPane.alignment="TOP_LEFT">
          <StackPane.margin>
             <Insets left="365.0" top="15.0" />
@@ -90,7 +85,7 @@
             <Insets left="393.0" top="40.0" />
          </StackPane.margin>
       </ComboBox>
-      <Canvas fx:id="canvas" height="700.0" width="1800.0" StackPane.alignment="TOP_LEFT">
+      <Canvas fx:id="canvas" height="737.0" width="1963.0" StackPane.alignment="TOP_LEFT">
          <StackPane.margin>
             <Insets left="10.0" top="80.0" />
          </StackPane.margin>
@@ -103,6 +98,41 @@
       <TextField fx:id="textFieldRadius" maxWidth="70.0" StackPane.alignment="TOP_LEFT">
          <StackPane.margin>
             <Insets left="535.0" top="40.0" />
+         </StackPane.margin>
+      </TextField>
+      <Button fx:id="startButton" mnemonicParsing="false" onAction="#clickStartButton" prefHeight="26.0" prefWidth="50.0" text="Start" StackPane.alignment="TOP_LEFT">
+         <StackPane.margin>
+            <Insets left="10.0" top="10.0" />
+         </StackPane.margin>
+      </Button>
+      <Button fx:id="monteCarloButton" mnemonicParsing="false" onAction="#clickMonteCarloButton" text="Monte Carlo" StackPane.alignment="TOP_LEFT">
+         <StackPane.margin>
+            <Insets left="620.0" top="10.0" />
+         </StackPane.margin>
+      </Button>
+      <Button fx:id="energyButton" mnemonicParsing="false" onAction="#clickEnergyButton" text="Energy" StackPane.alignment="TOP_LEFT">
+         <StackPane.margin>
+            <Insets left="610.0" top="40.0" />
+         </StackPane.margin>
+      </Button>
+      <Label text="MCS steps:" StackPane.alignment="TOP_LEFT">
+         <StackPane.margin>
+            <Insets left="670.0" top="45.0" />
+         </StackPane.margin>
+      </Label>
+      <Label text="kt:" StackPane.alignment="TOP_LEFT">
+         <StackPane.margin>
+            <Insets left="705.0" top="15.0" />
+         </StackPane.margin>
+      </Label>
+      <TextField fx:id="textFieldKt" maxWidth="40.0" StackPane.alignment="TOP_LEFT">
+         <StackPane.margin>
+            <Insets left="720.0" top="10.0" />
+         </StackPane.margin>
+      </TextField>
+      <TextField fx:id="textFieldMonteCarloSteps" maxWidth="30.0" StackPane.alignment="TOP_LEFT">
+         <StackPane.margin>
+            <Insets left="730.0" top="40.0" />
          </StackPane.margin>
       </TextField>
    </children>

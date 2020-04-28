@@ -3,16 +3,13 @@ package sample.simulation;
 import sample.gui.Controller;
 
 public class Calculations {
-    private static int xSize;
-    private static int ySize;
-
     public static Cell[][] calculateNextTimeStep(Cell[][] currentTimeStep,
                                                  boolean ifPeriodicBoundaryConditions,
                                                  boolean ifAbsorbingBoundaryConditions,
                                                  String neighbourhoodType,
                                                  int radiusNeighbourhood) {
-        setxSize(currentTimeStep.length);
-        setySize(currentTimeStep[0].length);
+        int xSize = currentTimeStep.length;
+        int ySize = currentTimeStep[0].length;
         Cell[][] nextGeneration = Controller.createEmptyArray(xSize, ySize);
 
         Board currentTimeStepBoard = new Board(xSize, ySize, currentTimeStep);
@@ -92,13 +89,5 @@ public class Calculations {
             }
         }
         return nextGeneration;
-    }
-
-    public static void setxSize(int xSize) {
-        Calculations.xSize = xSize;
-    }
-
-    public static void setySize(int ySize) {
-        Calculations.ySize = ySize;
     }
 }

@@ -54,6 +54,14 @@ public class Controller implements Initializable {
     TextField textFieldRadius;
     @FXML
     Label labelRadius;
+    @FXML
+    Button monteCarloButton;
+    @FXML
+    Button energyButton;
+    @FXML
+    TextField textFieldKt;
+    @FXML
+    TextField textFieldMonteCarloSteps;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -66,15 +74,19 @@ public class Controller implements Initializable {
         labelRadius.setVisible(false);
         textFieldRadius.setVisible(false);
         textFieldX.setText("55");
-        textFieldY.setText("120");
+        textFieldY.setText("140");
         textFieldR.setText("5");
         textFieldC.setText("5");
         textFieldRadius.setText("3");
+        textFieldMonteCarloSteps.setText("2");
+        textFieldKt.setText("0.1");
     }
 
     private static int squareSize = 5;
 
-    Animation animation;
+    private Animation animation;
+    private AnimationMonteCarlo animationMonteCarlo;
+    private static Cell[][] currentGeneration;
 
     public void clickStartButton() {
         try {
@@ -82,7 +94,11 @@ public class Controller implements Initializable {
         } catch (NullPointerException nullException) {
             System.out.println("First usage");
         }
-        long delay = 300_000_000;
+        try {
+            animationMonteCarlo.stop();
+        }catch (NullPointerException ignored){}
+
+        long delay = 0;//300_000_000;
 
         boolean ifPeriodicBoundaryConditions = checkBoxPeriodicBoundaryConditions.isSelected();
         boolean ifAbsorbingBoundaryConditions = checkBoxAbsorbingBoundaryConditions.isSelected();
@@ -99,14 +115,76 @@ public class Controller implements Initializable {
         else if (xSize < 200 && ySize < 200) squareSize = 5;
         else if (xSize < 300 && ySize < 300) squareSize = 3;
         else squareSize = 2;
+        Drawing.setSquareSize(squareSize);
 
-        Cell[][] currentGeneration = initializeArray(nucleationType, xSize, ySize,
+        currentGeneration = initializeArray(nucleationType, xSize, ySize,
                 rOrQuantityInRow, quantityOrQuantityInColumn);
 
         animation = new Animation(canvas, currentGeneration,
                 ifPeriodicBoundaryConditions, ifAbsorbingBoundaryConditions,
                 neighbourhoodType, radiusNeighbourhood, delay);
         animation.start();
+    }
+
+    public void clickMonteCarloButton() {
+        energyGridCounter = 0;
+        try {
+            animation.stop();
+        } catch (NullPointerException nullException) {
+            System.out.println("Nothing to smooth");
+        }
+        try {
+            animationMonteCarlo.stop();
+        } catch (NullPointerException nullException) {
+            System.out.println("First smoothing");
+        }
+
+        long delay = 500_000_000;
+
+        String neighbourhoodType = comboBoxNeighbourhood.getValue();
+        int radiusNeighbourhood = Integer.parseInt(textFieldRadius.getText());
+        boolean ifPeriodicBoundaryConditions = checkBoxPeriodicBoundaryConditions.isSelected();
+        boolean ifAbsorbingBoundaryConditions = checkBoxAbsorbingBoundaryConditions.isSelected();
+        int monteCarloSteps = Integer.parseInt(textFieldMonteCarloSteps.getText());
+        if(monteCarloSteps<1){
+            monteCarloSteps=1;
+            textFieldMonteCarloSteps.setText("1");
+        }
+        double kt = Double.parseDouble(textFieldKt.getText());
+        if(kt<0.1){
+            textFieldKt.setText("0.1");
+            kt=0.1;
+        }
+        if(kt>6){
+            textFieldKt.setText("6");
+            kt=6;
+        }
+
+        animationMonteCarlo = new AnimationMonteCarlo(canvas, currentGeneration, ifPeriodicBoundaryConditions, ifAbsorbingBoundaryConditions, neighbourhoodType,
+        radiusNeighbourhood, delay, kt, monteCarloSteps);
+        animationMonteCarlo.start();
+//        for (int i = 0; i < monteCarloSteps; i++) {
+//            currentGeneration = MonteCarloMethod.doMonteCarloMethod(currentGeneration, neighbourhoodType, radiusNeighbourhood,
+//                    ifPeriodicBoundaryConditions, ifAbsorbingBoundaryConditions, kt);
+//        }
+//        Drawing.draw(currentGeneration, canvas);
+    }
+
+    int energyGridCounter = 0;
+
+    public void clickEnergyButton() {
+        try {
+            animation.stop();
+        } catch (NullPointerException nullException) {
+            System.out.println("No energy to show");
+        }
+        if (energyGridCounter % 2 == 0) {
+            Drawing.drawEnergy(currentGeneration, canvas);
+            energyGridCounter++;
+        } else {
+            Drawing.draw(currentGeneration, canvas);
+            energyGridCounter = 0;
+        }
     }
 
     private int pauseResumeCounter = 0;
@@ -221,21 +299,32 @@ public class Controller implements Initializable {
                 canvas.setOnMouseClicked(this::doNothing);
                 canvas.setOnMouseDragged(this::doNothing);
                 labelRadiusOrRow.setText("Quantity in row:");
+                labelRadiusOrRow.setVisible(true);
+                textFieldR.setVisible(true);
                 labelQuantityOrColumn.setText("Quantity in column:");
+                labelQuantityOrColumn.setVisible(true);
+                textFieldC.setVisible(true);
                 break;
             }
             case "Random": {
                 canvas.setOnMouseClicked(this::doNothing);
                 canvas.setOnMouseDragged(this::doNothing);
-                labelRadiusOrRow.setText("----");
+                labelRadiusOrRow.setVisible(false);
+                textFieldR.setVisible(false);
                 labelQuantityOrColumn.setText("Quantity");
+                labelQuantityOrColumn.setVisible(true);
+                textFieldC.setVisible(true);
                 break;
             }
             case "With radius": {
                 canvas.setOnMouseClicked(this::doNothing);
                 canvas.setOnMouseDragged(this::doNothing);
                 labelRadiusOrRow.setText("Radius:");
+                labelRadiusOrRow.setVisible(true);
+                textFieldR.setVisible(true);
                 labelQuantityOrColumn.setText("Quantity");
+                labelQuantityOrColumn.setVisible(true);
+                textFieldC.setVisible(true);
                 break;
             }
             case "Self defined": {
@@ -247,8 +336,10 @@ public class Controller implements Initializable {
                 }
                 canvas.setOnMouseClicked(this::handleDraw);
                 canvas.setOnMouseDragged(this::handleDraw);
-                labelRadiusOrRow.setText("----");
-                labelQuantityOrColumn.setText("----");
+                labelRadiusOrRow.setVisible(false);
+                textFieldR.setVisible(false);
+                labelQuantityOrColumn.setVisible(false);
+                textFieldC.setVisible(false);
                 GraphicsContext gc = canvas.getGraphicsContext2D();
                 gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
                 break;
@@ -298,7 +389,8 @@ public class Controller implements Initializable {
         int b = Math.abs(generator.nextInt() % 256);
         return Color.rgb(r, g, b);
     }
-    private Color returnUniqueColor(HashSet<Color> allColors){
+
+    private Color returnUniqueColor(HashSet<Color> allColors) {
         Color newColor = generateColor();
         while (allColors.contains(newColor)) {
             newColor = generateColor();
@@ -331,6 +423,10 @@ public class Controller implements Initializable {
 
     public static int getSquareSize() {
         return squareSize;
+    }
+
+    public static void setCurrentGeneration(Cell[][] array) {
+        currentGeneration = array;
     }
 
     public static void closeProgram() {

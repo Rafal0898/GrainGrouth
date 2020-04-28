@@ -51,6 +51,8 @@ public class Board {
         board[index] = cell;
     }
 
+
+
     public int getWidth() {
         return width;
     }

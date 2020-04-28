@@ -13,11 +13,11 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("gui/sample.fxml"));
         primaryStage.setOnCloseRequest((e) -> Controller.closeProgram());
-        primaryStage.setTitle("Modelowanie wieloskalowe lab3 - Rozrost ziaren");
+        primaryStage.setTitle("Modelowanie wieloskalowe lab3-5 - Rozrost ziaren + Monte carlo");
         primaryStage.setHeight(400);
-        primaryStage.setWidth(700);
+        primaryStage.setWidth(790);
         primaryStage.setMinHeight(300);
-        primaryStage.setMinWidth(700);
+        primaryStage.setMinWidth(790);
 
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
